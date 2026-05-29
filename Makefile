@@ -11,6 +11,7 @@ help:
 	@printf "  fmt-check   Verify Go formatting\n"
 	@printf "  vet         Run go vet\n"
 	@printf "  test        Run unit tests\n"
+	@printf "  test-smoke  Run binary smoke tests\n"
 	@printf "  build       Build local binary\n"
 	@printf "  image       Build container image\n"
 	@printf "  check-go-version Verify local Go version\n"
@@ -30,6 +31,10 @@ vet: check-go-version
 .PHONY: test
 test: check-go-version
 	go test -race -coverprofile=coverage.out $(PKG)
+
+.PHONY: test-smoke
+test-smoke: build
+	sh tests/smoke/manager.sh $(BIN_DIR)/$(APP)
 
 .PHONY: build
 build: check-go-version

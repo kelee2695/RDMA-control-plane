@@ -15,6 +15,7 @@
 make fmt-check
 make vet
 make test
+make test-smoke
 make build
 make image
 ```

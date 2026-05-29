@@ -34,5 +34,5 @@ jobs:
       - name: Test
         run: make test
 
-      - name: Build binary
-        run: make build
+      - name: Smoke test binary
+        run: make test-smoke
