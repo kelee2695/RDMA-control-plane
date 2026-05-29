@@ -1,4 +1,4 @@
-本项目用来学习 RDMA、Kubernetes 控制面和 Go 控制面开发。
+本项目用来学习 RDMA、Kubernetes 控制面和 CI/CD。
 
 ## CI/CD 起步
 
@@ -6,6 +6,7 @@
 
 - Go 版本以本机环境为准：`go1.26.3`。
 - `.github/workflows/ci.yml`：PR 和 `main` 分支提交时运行格式检查、`go vet`、测试和构建。
+- `.github/workflows/cd.yml`：推送到 `main`、推送 `v*.*.*` tag 或手动触发时，构建 Ubuntu 运行时镜像并发布到 GitHub Container Registry。
 - `Makefile`：把本地开发命令和 CI 命令统一起来。
 
 本地验证：
@@ -15,6 +16,7 @@ make fmt-check
 make vet
 make test
 make build
+make image
 ```
 
 更多说明见 [docs/ci-cd.md](docs/ci-cd.md)。

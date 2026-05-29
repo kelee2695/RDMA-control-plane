@@ -1,6 +1,7 @@
-# CI
+# CI/CD
 
-This repository uses GitHub Actions for basic Go validation.
+This repository uses GitHub Actions for Go validation and container image
+publishing.
 
 ## Local commands
 
@@ -15,6 +16,7 @@ make fmt-check
 make vet
 make test
 make build
+make image
 ```
 
 ## CI workflow
@@ -28,8 +30,35 @@ It performs:
 - unit tests with race detector and coverage output
 - manager binary build
 
+## CD workflow
+
+`.github/workflows/cd.yml` publishes a container image to GitHub Container
+Registry.
+
+It runs when pushing to `main`, pushing a semantic version tag, or starting the
+workflow manually from GitHub Actions.
+
+Published image format:
+
+```text
+ghcr.io/kelee2695/rdma-control-plane:<tag>
+```
+
+The image is built with a multi-stage Dockerfile:
+
+- builder stage: `golang:1.26.3`
+- runtime stage: `ubuntu:24.04`
+- binary path: `/usr/local/bin/rdma-control-plane`
+
+Tags:
+
+- `latest` for pushes to `main`
+- the Git tag for `v*.*.*` releases
+- `sha-<commit>` for every published image
+
 ## Next useful additions
 
 - Add `golangci-lint` after the project has real code.
 - Add Kubernetes manifest validation with `kubeconform` or `kubectl kustomize`.
 - Add integration tests with `envtest` once controller-runtime is introduced.
+- Add server deployment after the image is published.

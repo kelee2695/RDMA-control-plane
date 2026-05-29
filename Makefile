@@ -1,6 +1,7 @@
 APP := rdma-control-plane
 PKG := ./...
 BIN_DIR := bin
+IMAGE ?= ghcr.io/kelee2695/rdma-control-plane:dev
 GO_VERSION := 1.26.3
 
 .PHONY: help
@@ -11,6 +12,7 @@ help:
 	@printf "  vet         Run go vet\n"
 	@printf "  test        Run unit tests\n"
 	@printf "  build       Build local binary\n"
+	@printf "  image       Build container image\n"
 	@printf "  check-go-version Verify local Go version\n"
 
 .PHONY: fmt
@@ -33,6 +35,10 @@ test: check-go-version
 build: check-go-version
 	mkdir -p $(BIN_DIR)
 	go build -o $(BIN_DIR)/$(APP) ./cmd/manager
+
+.PHONY: image
+image:
+	docker build -t $(IMAGE) .
 
 .PHONY: check-go
 check-go:
